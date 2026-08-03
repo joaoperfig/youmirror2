@@ -22,6 +22,7 @@ camera_control.py - camera related control functions
 servo_control.py - servo control related functions
 camera_test.py - grabs frame, detects face, saves frame
 camera_track.py - live face detection loop, printing face positions
+camera_callibrate.py - script that waits 5 seconds for user to position themselves facing mirror head on and seeing their reflection centered. grabs a frame and detects face position, and uses that as "true center" pixel position. assume center of frame if callibration has not been run
 servo_test.py - live videogame-like control of servos. w-a-s-d control movement at minimum speed, W-A-S-D control movement at max speed. key presses are live captured from terminal and should work via ssh
 servo_callibrate.py - script to find ideal frequencies for fast_positive_speed, slow_positive_speed, stopped_speed, fast_negative_speed, slow_negative_speed; for both servos. Assume reasonable values if callibration has not ben done
 main.py - main face tracking script with loop that grabs frames, detects faces, and sets servo speeds.
