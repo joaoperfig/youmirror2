@@ -65,7 +65,7 @@ Enable I²C and verify the default HAT address:
 ```bash
 sudo raspi-config
 sudo apt update
-sudo apt install python3-picamera2 python3-opencv python3-venv i2c-tools
+sudo apt install python3-picamera2 python3-opencv opencv-data python3-venv i2c-tools
 i2cdetect -y 1
 ```
 

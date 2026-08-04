@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import time
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any, Optional
 
 
@@ -143,8 +144,24 @@ class FaceDetector:
                 "OpenCV is required. Install it with 'sudo apt install python3-opencv'."
             ) from error
         self.cv2 = cv2
-        cascade_path = cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
-        self._cascade = cv2.CascadeClassifier(cascade_path)
+        filename = "haarcascade_frontalface_default.xml"
+        cv2_data = getattr(cv2, "data", None)
+        candidates: list[Path] = []
+        if cv2_data is not None and hasattr(cv2_data, "haarcascades"):
+            candidates.append(Path(cv2_data.haarcascades) / filename)
+        candidates.extend(
+            [
+                Path("/usr/share/opencv4/haarcascades") / filename,
+                Path("/usr/share/opencv/haarcascades") / filename,
+            ]
+        )
+        cascade_path = next((path for path in candidates if path.is_file()), None)
+        if cascade_path is None:
+            raise RuntimeError(
+                "Could not find the OpenCV face detection model. Install it with "
+                "'sudo apt install opencv-data'."
+            )
+        self._cascade = cv2.CascadeClassifier(str(cascade_path))
         if self._cascade.empty():
             raise RuntimeError(f"Could not load face detection model: {cascade_path}")
 
